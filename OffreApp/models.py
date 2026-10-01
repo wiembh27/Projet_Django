@@ -30,17 +30,17 @@ class Offre(models.Model):
     expedition = models.ForeignKey(
         Expedition,
         on_delete=models.CASCADE,
-        related_name='Offre'
+        related_name='Offres'
     )
 
     transporteur = models.ForeignKey(
         Utilisateur,
         on_delete=models.CASCADE,
-        related_name='Offre'
+        related_name='Offres'
     )
 
     vehicule = models.ForeignKey(
         Vehicule,
         on_delete=models.CASCADE,
-        related_name='Offre'
+        related_name='Offres'
     )
