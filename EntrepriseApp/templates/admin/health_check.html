@@ -1,0 +1,73 @@
+
+{% extends "admin/base_site.html" %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+
+<p>Verification des regles metier et detection des anomalies.</p>
+
+<h2>1. Offres incoherentes</h2>
+<p>Nombre : {{ offres_incoherentes.count }}</p>
+
+<ul>
+{% for offre in offres_incoherentes %}
+    <li>
+        Offre {{ offre.id }} -
+        Expedition {{ offre.expedition.reference }} -
+        Statut offre : {{ offre.statut }} -
+        Statut expedition : {{ offre.expedition.statut }}
+    </li>
+{% empty %}
+    <li>Aucune anomalie detectee.</li>
+{% endfor %}
+</ul>
+
+<hr>
+
+<h2>2. Expeditions bloquees</h2>
+<p>Nombre : {{ expeditions_bloquees.count }}</p>
+
+<ul>
+{% for expedition in expeditions_bloquees %}
+    <li>
+        {{ expedition.reference }} -
+        {{ expedition.statut }} -
+        Creee le {{ expedition.created_at }}
+    </li>
+{% empty %}
+    <li>Aucune expedition bloquee.</li>
+{% endfor %}
+</ul>
+
+<hr>
+
+<h2>3. Transporteurs sans flotte</h2>
+<p>Nombre : {{ transporteurs_sans_flotte.count }}</p>
+
+<ul>
+{% for entreprise in transporteurs_sans_flotte %}
+    <li>{{ entreprise.raison_sociale }}</li>
+{% empty %}
+    <li>Aucun transporteur sans flotte.</li>
+{% endfor %}
+</ul>
+
+<hr>
+
+<h2>4. Doublons de propositions</h2>
+<p>Nombre : {{ doublons.count }}</p>
+
+<ul>
+{% for doublon in doublons %}
+    <li>
+        Expedition : {{ doublon.expedition__reference }} -
+        Transporteur : {{ doublon.transporteur__raison_sociale }} -
+        Nombre d'offres : {{ doublon.total }}
+    </li>
+{% empty %}
+    <li>Aucun doublon detecte.</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
