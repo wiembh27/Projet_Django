@@ -63,7 +63,8 @@ class Utilisateur(AbstractUser):
 
             self.user_id = prefixe + str(numero).zfill(2)
 
-        valider_gmail(self.email)
+        if self.email:
+            valider_gmail(self.email)
 
         super().save(*args, **kwargs)
 
@@ -103,3 +104,5 @@ class Entreprise(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
+    def __str__(self):
+        return self.raison_sociale

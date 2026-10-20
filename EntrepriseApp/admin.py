@@ -21,13 +21,16 @@ class UtilisateurAdmin(UserAdmin):
 
 class VehiculeInline(admin.TabularInline):
     model = Vehicule
-    extra = 0
+    extra = 1 
     fields = ('immatriculation', 'type_vehicule', 'capacite_kg', 'disponibilite')
+    extra = 1 
+    show_change_link= True
+
 @admin.register(Entreprise)
 class EntrepriseAdmin(admin.ModelAdmin):
     inlines = [VehiculeInline]
-    list_display = ('raison_sociale', 'matricule_fiscal', 'type_entreprise', 'utilisateur')
-    list_filter = ('type_entreprise',)
+    list_display = ('raison_sociale', 'matricule_fiscal', 'type_entreprise', 'utilisateur', 'created_at')
+    list_filter = ('type_entreprise','created_at')
     search_fields = ('raison_sociale', 'matricule_fiscal')
     ordering = ('raison_sociale',)
     autocomplete_fields = ('utilisateur',)
@@ -45,4 +48,6 @@ class EntrepriseAdmin(admin.ModelAdmin):
             'fields': ('created_at', 'updated_at')
         }),
     )
-from . import health_check
+admin.site.site_header='Transconnect_Administration'
+admin.site.site_title='TransConnect' #titre de l'onglet du navigateur
+admin.site.index_title="Tableau de bord"

@@ -1,14 +1,14 @@
-from django.contrib import admin
-
-# Register your models here.
 
 import csv
 
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.html import format_html
+
 from .models import Offre
 
+
+# ACTION 1 : Exporter les offres sélectionnées en CSV
 
 @admin.action(description="Exporter la sélection en CSV")
 def exporter_offres_csv(modeladmin, request, queryset):
@@ -34,6 +34,21 @@ def exporter_offres_csv(modeladmin, request, queryset):
 
     return response
 
+
+# ACTION 2 : Refuser plusieurs offres sélectionnées
+
+@admin.action(description="Mettre les offres sélectionnées au statut Refusée")
+def refuser_offres(modeladmin, request, queryset):
+
+    nombre = queryset.update(statut='refusee')
+
+    modeladmin.message_user(
+        request,
+        f"{nombre} offre(s) refusée(s) avec succès."
+    )
+
+
+# ADMINISTRATION DES OFFRES
 
 @admin.register(Offre)
 class OffreAdmin(admin.ModelAdmin):
@@ -100,8 +115,10 @@ class OffreAdmin(admin.ModelAdmin):
         }),
     )
 
-    actions = [exporter_offres_csv]
+    # Actions disponibles
+    actions = [exporter_offres_csv, refuser_offres]
 
+    # Affichage coloré du statut
     @admin.display(description='Statut')
     def statut_colore(self, obj):
 
@@ -121,6 +138,7 @@ class OffreAdmin(admin.ModelAdmin):
             obj.get_statut_display()
         )
 
+    # Protection des offres acceptées
     def get_readonly_fields(self, request, obj=None):
 
         base = list(self.readonly_fields)

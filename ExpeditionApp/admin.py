@@ -17,15 +17,16 @@ class EnRetardFilter(admin.SimpleListFilter):
         return [('oui', 'Oui'), ('non', 'Non')]
 
     def queryset(self, request, queryset):
+        aujourd_hui=timezone.now().date()
         if self.value() == 'oui':
             return queryset.filter(
                 statut='publiee',
-                date_souhaitee__lt=timezone.now().date()
+                date_souhaitee__lt=aujourd_hui
             )
         if self.value() == 'non':
             return queryset.exclude(
                 statut='publiee',
-                date_souhaitee__lt=timezone.now().date()
+                date_souhaitee__lt=aujourd_hui
             )
         return queryset
 
@@ -68,7 +69,7 @@ class ExpeditionAdmin(admin.ModelAdmin):
 
     autocomplete_fields = ('entreprise',)
 
-    readonly_fields = ('reference', 'created_at', 'updated_at', 'statut_colore')
+    readonly_fields = ('reference', 'created_at', 'updated_at', 'statut_colore') #attribut qu on peut voir sans les modifier
 
     inlines = [OffreInline]
 
@@ -127,3 +128,6 @@ class ExpeditionAdmin(admin.ModelAdmin):
         )
 
     actions = ['cloturer_expeditions']
+
+
+#admin.site.register(Vehicule,VehiculeAdmin)
