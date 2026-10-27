@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Expéditions</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f6fc;
+            padding: 40px;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #eff6ff;
+        }
+
+        a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Gestion des expéditions</h1>
+
+    <table>
+        <tr>
+            <th>Référence</th>
+            <th>Ville de départ</th>
+        </tr>
+
+        {% for expedition in liste %}
+        <tr>
+            <td>
+                <a href="{% url 'expedition:details' expedition.pk %}">
+                    {{ expedition.reference }}
+                </a>
+            </td>
+            <td>{{ expedition.ville_depart }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No expeditions</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

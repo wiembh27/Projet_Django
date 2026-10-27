@@ -1,9 +1,9 @@
 
 from django.contrib import admin
-from django.urls import path
-
+from django.urls import path, include
 from EntrepriseApp.health_check import health_check_view
 
+from EntrepriseApp.views import home
 
 class TransConnectAdminSite(admin.AdminSite):
 
@@ -29,4 +29,6 @@ for model, model_admin in admin.site._registry.items():
 
 urlpatterns = [
     path('admin/', admin_site.urls),
+    path('home/', home, name='home'),
+    path('expedition/', include('ExpeditionApp.urls')),
 ]

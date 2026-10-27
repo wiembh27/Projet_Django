@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails expédition</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f6fc;
+            padding: 50px;
+        }
+
+        .card {
+            max-width: 450px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #1e3a5f;
+        }
+
+        .reference {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .back {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        button {
+            margin-top: 25px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Détails de l'expédition</h1>
+
+        <p>Référence :</p>
+        <p class="reference">{{ exp.reference }}</p>
+
+        <a class="back" href="{% url 'expedition:list' %}">
+            Retour à la liste
+        </a>
+
+        <form action="{% url 'expedition:delete' exp.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('Supprimer cette expédition ?')">
+                Supprimer
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
