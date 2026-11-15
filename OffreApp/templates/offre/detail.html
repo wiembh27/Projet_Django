@@ -1,0 +1,75 @@
+
+{% extends "base.html" %}
+
+{% block title %}Détail offre{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'offres:liste' %}">
+    Retour aux offres
+</a>
+
+<h2>Offre n°{{ offre.pk }}</h2>
+
+<div class="card">
+    <p>
+        <strong>Expédition :</strong>
+        <a href="{% url 'expedition:detail' offre.expedition.reference %}">
+            {{ offre.expedition.reference }}
+        </a>
+    </p>
+
+    <p>
+        <strong>Transporteur :</strong>
+        {{ offre.transporteur.raison_sociale }}
+    </p>
+
+    <p>
+        <strong>Véhicule :</strong>
+        <a href="{% url 'vehicules:detail' offre.vehicule.pk %}">
+            {{ offre.vehicule.immatriculation }}
+        </a>
+    </p>
+
+    <p>
+        <strong>Prix :</strong>
+        {{ offre.prix|floatformat:2 }} DT
+    </p>
+
+    <p>
+        <strong>Délai :</strong>
+        {{ offre.delai_jours }} jours
+    </p>
+
+    <p>
+        <strong>Statut :</strong>
+        {{ offre.get_statut_display }}
+    </p>
+
+    <p>
+        <strong>Date de proposition :</strong>
+        {{ offre.date_proposition|date:"d/m/Y" }}
+    </p>
+</div>
+
+<div class="card">
+    <h3>Supprimer cette offre</h3>
+
+    <p>
+        Attention : cette action est définitive.
+    </p>
+
+    <form
+        method="post"
+        action="{% url 'offres:supprimer' offre.pk %}"
+        onsubmit="return confirm('Confirmer la suppression de cette offre ?');"
+    >
+        {% csrf_token %}
+
+        <button type="submit" class="danger">
+            Supprimer l'offre
+        </button>
+    </form>
+</div>
+
+{% endblock %}

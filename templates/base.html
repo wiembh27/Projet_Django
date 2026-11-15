@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}TransConnect{% endblock %}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f3f6fc;
+            color: #24334a;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(120deg, #102d56, #2264a5);
+            color: white;
+            padding: 22px 6%;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+        }
+
+        header h1 {
+            margin: 0 0 15px;
+            font-size: 27px;
+            letter-spacing: 0.5px;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.18);
+        }
+
+        main {
+            max-width: 1150px;
+            margin: 45px auto;
+            padding: 0 24px;
+        }
+
+        h2 {
+            color: #173e70;
+            margin-bottom: 25px;
+            font-size: 27px;
+        }
+
+        h3 {
+            color: #22588f;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e7edf5;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 5px 20px rgba(24,55,96,0.06);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #eaf2fb;
+            color: #234b78;
+            font-weight: 600;
+            text-align: left;
+            padding: 15px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        tbody tr:hover {
+            background: #f5f9ff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        a {
+            color: #236bb2;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            background: #236bb2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 11px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #184f88;
+        }
+
+        button.danger {
+            background: #cc4551;
+        }
+
+        button.danger:hover {
+            background: #a82d38;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 30px 20px;
+            border: 1px solid #e6edf7;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(20,60,110,0.12);
+            text-decoration: none;
+        }
+
+        .dashboard-card h3 {
+            margin: 0 0 10px;
+        }
+
+        .dashboard-card p {
+            color: #69788a;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #8090a3;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            main {
+                margin: 25px auto;
+                padding: 0 14px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+        }
+
+.message-error {
+    border-left: 5px solid #cc4551;
+}
+
+.message-success {
+    border-left: 5px solid #2d9b73;
+}
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>TransConnect</h1>
+
+    <nav>
+        <a href="{% url 'home' %}">Accueil</a>
+        <a href="{% url 'expedition:liste' %}">Expéditions</a>
+        <a href="{% url 'vehicules:liste' %}">Véhicules</a>
+        <a href="{% url 'offres:liste' %}">Offres</a>
+        <a href="{% url 'entreprises:liste' %}">Entreprises</a>
+    </nav>
+</header>
+
+
+<main>
+   
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="card message-error">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="card message-success">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    TransConnect © 2026 — Plateforme de gestion logistique
+</footer>
+
+</body>
+</html>

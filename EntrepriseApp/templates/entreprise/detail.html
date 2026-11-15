@@ -1,0 +1,22 @@
+
+{% extends "base.html" %}
+
+{% block title %}Détail entreprise{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'entreprises:liste' %}">
+    Retour aux entreprises
+</a>
+
+<h2>{{ entreprise.raison_sociale|upper }}</h2>
+
+<div class="card">
+    <p><strong>Raison sociale :</strong> {{ entreprise.raison_sociale }}</p>
+    <p><strong>Matricule fiscal :</strong> {{ entreprise.matricule_fiscal }}</p>
+    <p><strong>Type :</strong> {{ entreprise.get_type_entreprise_display }}</p>
+    <p><strong>Adresse :</strong> {{ entreprise.adresse|linebreaksbr }}</p>
+    <p><strong>Créée le :</strong> {{ entreprise.created_at|date:"d/m/Y" }}</p>
+</div>
+
+{% endblock %}

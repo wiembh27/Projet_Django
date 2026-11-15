@@ -1,0 +1,45 @@
+
+{% extends "base.html" %}
+
+{% block title %}Accueil - TransConnect{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h1>Bienvenue sur TransConnect</h1>
+
+    <p>
+        TransConnect est une plateforme de gestion
+        des expéditions, véhicules, offres et entreprises.
+    </p>
+
+    <h2>Accès rapide</h2>
+
+    <ul>
+        <li>
+            <a href="{% url 'expedition:liste' %}">
+                Consulter les expéditions
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'vehicules:liste' %}">
+                Consulter les véhicules
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'offres:liste' %}">
+                Consulter les offres
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'entreprises:liste' %}">
+                Consulter les entreprises
+            </a>
+        </li>
+    </ul>
+</div>
+
+{% endblock %}

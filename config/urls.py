@@ -2,8 +2,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from EntrepriseApp.health_check import health_check_view
-
 from EntrepriseApp.views import home
+
 
 class TransConnectAdminSite(admin.AdminSite):
 
@@ -15,7 +15,6 @@ class TransConnectAdminSite(admin.AdminSite):
                 name='health_check'
             ),
         ]
-
         return urls_personnalisees + super().get_urls()
 
 
@@ -27,8 +26,14 @@ admin_site.index_title = "Tableau de bord des opérations"
 for model, model_admin in admin.site._registry.items():
     admin_site.register(model, type(model_admin))
 
+
 urlpatterns = [
+    path('', home, name='accueil'),
     path('admin/', admin_site.urls),
     path('home/', home, name='home'),
     path('expedition/', include('ExpeditionApp.urls')),
+    path('vehicules/', include('VehiculeApp.urls')),
+    path('offres/', include('OffreApp.urls')),
+    path('entreprises/', include('EntrepriseApp.urls')),
+    
 ]

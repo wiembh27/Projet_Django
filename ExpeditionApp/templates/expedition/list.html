@@ -1,83 +1,53 @@
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Expéditions</title>
+{% extends "base.html" %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f6fc;
-            padding: 40px;
-            color: #1e293b;
-        }
+{% block title %}Liste des expéditions{% endblock %}
 
-        h1 {
-            color: #1e3a5f;
-            margin-bottom: 25px;
-        }
+{% block content %}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        }
+<h2>Expéditions publiées</h2>
 
-        th, td {
-            padding: 16px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        th {
-            background-color: #2563eb;
-            color: white;
-        }
-
-        tr:hover {
-            background-color: #eff6ff;
-        }
-
-        a {
-            color: #2563eb;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-
-    <h1>Gestion des expéditions</h1>
-
+<div class="card">
     <table>
-        <tr>
-            <th>Référence</th>
-            <th>Ville de départ</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>Référence</th>
+                <th>Départ</th>
+                <th>Arrivée</th>
+                <th>Poids</th>
+                <th>Date souhaitée</th>
+                <th>Description</th>
+            </tr>
+        </thead>
 
-        {% for expedition in liste %}
-        <tr>
-            <td>
-                <a href="{% url 'expedition:details' expedition.pk %}">
-                    {{ expedition.reference }}
-                </a>
-            </td>
-            <td>{{ expedition.ville_depart }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="2">No expeditions</td>
-        </tr>
-        {% endfor %}
+        <tbody>
+            {% for expedition in expeditions %}
+            <tr>
+                <td>
+                    <a href="{% url 'expedition:detail' expedition.reference %}">
+                        {{ expedition.reference|upper }}
+                    </a>
+                </td>
+
+                <td>{{ expedition.ville_depart|title }}</td>
+                <td>{{ expedition.ville_arrivee|title }}</td>
+                <td>{{ expedition.poids_kg|floatformat:0 }} kg</td>
+                <td>{{ expedition.date_souhaitee|date:"d/m/Y" }}</td>
+
+                <td>
+                    {{ expedition.description|default:"Aucune description"|truncatechars:50 }}
+                </td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="6">
+                    Aucune expédition disponible.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
+</div>
 
-</body>
-</html>
+{% endblock %}

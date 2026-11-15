@@ -1,29 +1,71 @@
-from django.shortcuts import render
+
 from django.http import HttpResponse
-from .models import Expedition
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+
+from .models import Expedition
+from OffreApp.models import Offre
+
 
 def home(request):
     return HttpResponse("<h1>Welcome to Expeditions</h1>")
 
+
 def welcome(request, name):
     return HttpResponse(f"Hello {name}")
 
+
 def listExpeditions(request):
-    liste = Expedition.objects.all()
-    return render(request, 'expedition/list.html', {"liste": liste})
+    expeditions = (
+        Expedition.objects
+        .filter(statut='publiee')
+        .select_related('entreprise')
+        .order_by('-created_at')
+    )
+
+    return render(
+        request,
+        'expedition/list.html',
+        {'expeditions': expeditions, 'liste': expeditions}
+    )
+
 
 def detailsExpedition(request, pk):
-    expedition = Expedition.objects.get(pk=pk)
-    return render(request, 'expedition/details.html', {'exp': expedition})
+    expedition = get_object_or_404(
+        Expedition.objects.select_related('entreprise'),
+        pk=pk
+    )
 
-#DANS VIEWS TOUJOURS FAIRE UN RETURN POUR LES FONCTIONS
+    offres = (
+        Offre.objects
+        .filter(expedition=expedition)
+        .select_related('transporteur', 'vehicule')
+        .order_by('-date_proposition')
+    )
 
+    return render(
+        request,
+        'expedition/details.html',
+        {
+            'expedition': expedition,
+            'exp': expedition,
+            'offres': offres
+        }
+    )
+
+
+def detail_expedition_reference(request, reference):
+    expedition = get_object_or_404(
+        Expedition,
+        reference=reference
+    )
+
+    return detailsExpedition(request, expedition.pk)
+
+
+@require_POST
 def deleteExpedition(request, pk):
     expedition = get_object_or_404(Expedition, pk=pk)
+    expedition.delete()
 
-    if request.method == "POST":
-        expedition.delete()
-        return redirect('expedition:list')
-
-    return redirect('expedition:details', pk=pk)
+    return redirect('expedition:liste')

@@ -1,75 +1,58 @@
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Détails expédition</title>
+{% extends "base.html" %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f6fc;
-            padding: 50px;
-        }
+{% block title %}Détail expédition{% endblock %}
 
-        .card {
-            max-width: 450px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
+{% block content %}
 
-        h1 {
-            color: #1e3a5f;
-        }
+<a href="{% url 'expedition:liste' %}">
+    Retour aux expéditions
+</a>
 
-        .reference {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2563eb;
-        }
+<h2>Expédition {{ expedition.reference|upper }}</h2>
 
-        .back {
-            color: #2563eb;
-            text-decoration: none;
-        }
+<div class="card">
+    <p><strong>Départ :</strong> {{ expedition.ville_depart|title }}</p>
+    <p><strong>Arrivée :</strong> {{ expedition.ville_arrivee|title }}</p>
+    <p><strong>Entreprise :</strong> {{ expedition.entreprise.raison_sociale }}</p>
+    <p><strong>Poids :</strong> {{ expedition.poids_kg|floatformat:2 }} kg</p>
+    <p><strong>Date souhaitée :</strong> {{ expedition.date_souhaitee|date:"d/m/Y" }}</p>
+    <p><strong>Statut :</strong> {{ expedition.get_statut_display }}</p>
+    <p><strong>Description :</strong> {{ expedition.description|default:"Aucune description" }}</p>
 
-        button {
-            margin-top: 25px;
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+    <form method="post"
+          action="{% url 'expedition:delete' expedition.pk %}"
+          onsubmit="return confirm('Confirmer la suppression ?');">
 
-        button:hover {
-            background: #b91c1c;
-        }
-    </style>
-</head>
-<body>
+        {% csrf_token %}
 
-    <div class="card">
-        <h1>Détails de l'expédition</h1>
+        <button type="submit" class="danger">
+            Supprimer l'expédition
+        </button>
+    </form>
+</div>
 
-        <p>Référence :</p>
-        <p class="reference">{{ exp.reference }}</p>
+<h3>Offres associées</h3>
 
-        <a class="back" href="{% url 'expedition:list' %}">
-            Retour à la liste
-        </a>
+<div class="card">
+    <ul>
+        {% for offre in offres %}
+        <li>
+            <a href="{% url 'offres:detail' offre.pk %}">
+                Offre n°{{ offre.pk }}
+            </a>
+            —
+            {{ offre.transporteur.raison_sociale }}
+            —
+            {{ offre.prix|floatformat:2 }}
+            —
+            {{ offre.get_statut_display }}
+        </li>
 
-        <form action="{% url 'expedition:delete' exp.pk %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" onclick="return confirm('Supprimer cette expédition ?')">
-                Supprimer
-            </button>
-        </form>
-    </div>
+        {% empty %}
+        <li>Aucune offre pour cette expédition.</li>
+        {% endfor %}
+    </ul>
+</div>
 
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+
+{% block title %}Détail véhicule{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'vehicules:liste' %}">
+    Retour aux véhicules
+</a>
+
+<h2>Véhicule {{ vehicule.immatriculation|upper }}</h2>
+
+<div class="card">
+    <p>
+        <strong>Immatriculation :</strong>
+        {{ vehicule.immatriculation }}
+    </p>
+
+    <p>
+        <strong>Type :</strong>
+        {{ vehicule.get_type_vehicule_display }}
+    </p>
+
+    <p>
+        <strong>Capacité :</strong>
+        {{ vehicule.capacite_kg }} kg
+    </p>
+
+    <p>
+        <strong>Disponible :</strong>
+        {{ vehicule.disponibilite|yesno:"Oui,Non" }}
+    </p>
+
+    <p>
+        <strong>Entreprise :</strong>
+        {{ vehicule.entreprise.raison_sociale }}
+    </p>
+
+    <p>
+        <strong>Créé le :</strong>
+        {{ vehicule.created_at|date:"d/m/Y" }}
+    </p>
+</div>
+
+<div class="card">
+    <h3>Supprimer ce véhicule</h3>
+
+    <p>
+        Attention : la suppression est définitive.
+        Un véhicule associé à une offre ne peut
+        pas être supprimé.
+    </p>
+
+    <form
+        method="post"
+        action="{% url 'vehicules:supprimer' vehicule.pk %}"
+        onsubmit="return confirm('Confirmer la suppression de ce véhicule ?');"
+    >
+        {% csrf_token %}
+
+        <button type="submit" class="danger">
+            Supprimer le véhicule
+        </button>
+    </form>
+</div>
+
+{% endblock %}
