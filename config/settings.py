@@ -127,3 +127,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL= "EntrepriseApp.Utilisateur"
+
+LOGIN_URL = 'Login'
+LOGIN_REDIRECT_URL = 'expedition:liste'
+LOGOUT_REDIRECT_URL = 'Login'

@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-
+from django.shortcuts import render, redirect
 from .models import Expedition
 from OffreApp.models import Offre
 
@@ -69,3 +69,13 @@ def deleteExpedition(request, pk):
     expedition.delete()
 
     return redirect('expedition:liste')
+
+def inscription_view(request):
+    if request.method == 'POST':
+        form = InscriptionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Login')
+    else:
+        form = InscriptionForm()
+
